@@ -55,20 +55,23 @@ enum Type {
 
 impl Type {
     fn new(input: &str) -> Self {
-        // Create a map from cards to their frequencies. We replace the actual
-        // values of the cards with the value of the corresponding index into
-        // the array of frequencies.
-        //
-        // The only reason we sort the cards is to group cards with the same
-        // value together. This makes it easy to replace them with the same
-        // index value.
-        //
-        // The index used for Jokers is 0, and their frequencies are not
-        // actually added to the mapping. Instead the number of Jokers is added
-        // to the highest frequency.
         let mut cards = input.as_bytes().to_owned();
-        cards.sort();
         let joker_count = cards.iter().filter(|card| **card as char == 'J').count();
+
+        // Create an array to count the cards of each kind. We first replace the
+        // actual values of the cards with the value of the corresponding index
+        // into the array of counts.
+        //
+        // We sort the cards to group cards with the same value together. This
+        // makes it easy to replace them with the same index value.
+        //
+        // The index used for Jokers is 0, and their counts are not actually
+        // added to the mapping. Instead the number of Jokers is added to the
+        // highest count.
+
+        // Replace each card with the index at which that card's count
+        // should be stored
+        cards.sort();
         let mut current = cards[0];
         let mut index = 1;
         for i in 0..cards.len() {
@@ -82,9 +85,11 @@ impl Type {
             }
             cards[i] = index
         }
+
+        // Calculate the count of each non-Joker card
         let mut counts = [0, 0, 0, 0, 0];
         for i in 0..counts.len() {
-            // Skip calculating the Joker frequency
+            // Skip calculating the Joker count
             if cards[i] != 0 {
                 // If there were no Jokers, the index in 'cards' is too big
                 let index = if joker_count == 0 {
@@ -96,7 +101,7 @@ impl Type {
             }
         }
 
-        // Use the card frequencies to find the hand's type
+        // Use the card counts to find the hand's type
         counts.sort();
         counts[4] += joker_count;
         match counts {
