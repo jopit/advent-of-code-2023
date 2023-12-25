@@ -55,17 +55,24 @@ enum Type {
 
 impl Type {
     fn new(input: &str) -> Self {
-        // Create a map from cards to their frequencies
+        // Create a map from cards to their frequencies.
+        // We replace the actual values of the cards with
+        // the value of the corresponding index into the
+        // array of frequencies.
+        //
+        // The only reason we sort the cards is to group
+        // cards with the same value together. This makes
+        // it easy to replace them with the same index value.
         let mut cards = input.as_bytes().to_owned();
         cards.sort();
         let mut current = cards[0];
-        let mut replacement = 0;
+        let mut index = 0;
         for i in 0..cards.len() {
             if cards[i] != current {
                 current = cards[i];
-                replacement += 1;
+                index += 1;
             }
-            cards[i] = replacement
+            cards[i] = index
         }
         let mut counts = [0, 0, 0, 0, 0];
         for i in 0..counts.len() {
