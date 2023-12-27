@@ -5,12 +5,7 @@ fn main() {
 }
 
 fn process(input: &str) -> String {
-    let mut result: u32 = 0;
-
-    for line in input.lines() {
-        todo!()
-    }
-    result.to_string()
+    todo!()
 }
 
 #[cfg(test)]

@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use aoc_utils::Tokenizer;
+
 fn main() {
     let input = include_str!("./input.txt");
     let output = process(input);
@@ -87,11 +89,16 @@ fn process(input: &str) -> String {
 }
 
 fn parse_node(line: &str) -> Node {
-    let mut words = line.split_ascii_whitespace();
-    let name = words.next().unwrap().trim();
-    words.next(); // consume '='
-    let left = &words.next().unwrap()[1..4];
-    let right = &words.next().unwrap().trim()[0..3];
+    let mut tokens = Tokenizer::new(line);
+
+    let name = tokens.get();
+    tokens.consume("=");
+    tokens.consume("(");
+    let left = tokens.get();
+    tokens.consume(",");
+    let right = tokens.get();
+    tokens.consume(")");
+
     Node { name, left, right }
 }
 
