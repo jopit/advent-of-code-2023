@@ -14,7 +14,9 @@ mod tests {
 
     #[test]
     fn test_process() {
-        let result = process("");
+        let result = process(
+            ""
+        );
         assert_eq!(result, "todo".to_string());
     }
 }
